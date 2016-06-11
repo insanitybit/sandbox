@@ -1,0 +1,14 @@
+[package]
+authors = ["insanitybit <insanitybit@gmail.com>"]
+name = "sandbox"
+version = "0.1.0"
+
+[dependencies]
+libc = "*"
+nix = "0.5"
+serde = "*"
+serde_json = "0.7.*"
+serde_macros = "*"
+
+[dependencies.ipc-channel]
+git = "https://github.com/servo/ipc-channel/"
