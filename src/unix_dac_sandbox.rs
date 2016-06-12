@@ -2,6 +2,7 @@ use nix::unistd::{setuid, setgid, chroot, chdir};
 use std::error::Error;
 use std::path::Path;
 use sandbox_descriptor::{Platform, SandboxDescriptor};
+use sandbox_error::SandboxError;
 
 #[derive(Debug, Clone, Copy)]
 pub enum UidOrGid {
@@ -92,7 +93,7 @@ impl<'a> UnixDacSandbox<'a> {
 }
 
 impl<'a> SandboxDescriptor for UnixDacSandbox<'a> {
-    fn execute(&mut self) -> Result<(), Box<Error>> {
+    fn execute(&mut self) -> Result<(), SandboxError> {
 
         if let Some(chroot_dir) = self.chroot_dir {
             try!(chdir(chroot_dir));

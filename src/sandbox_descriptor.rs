@@ -1,4 +1,4 @@
-use std::error::Error;
+use sandbox_error::SandboxError;
 
 pub enum Platform {
     Unix,
@@ -7,6 +7,6 @@ pub enum Platform {
 }
 
 pub trait SandboxDescriptor {
-    fn execute(&mut self) -> Result<(), Box<Error>>;
+    fn execute(&mut self) -> Result<(), SandboxError>;
     fn get_platform_support(&self) -> Vec<Platform>;
 }
