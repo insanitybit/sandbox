@@ -1,5 +1,4 @@
 use nix::unistd::{setuid, setgid, chroot, chdir};
-use std::error::Error;
 use std::path::Path;
 use sandbox_descriptor::{Platform, SandboxDescriptor};
 use sandbox_error::SandboxError;
@@ -112,5 +111,9 @@ impl<'a> SandboxDescriptor for UnixDacSandbox<'a> {
 
     fn get_platform_support(&self) -> Vec<Platform> {
         vec![Platform::Unix]
+    }
+
+    fn fail_str(&self) -> Option<String> {
+        Some("UnixDacSandbox Failed".to_owned())
     }
 }

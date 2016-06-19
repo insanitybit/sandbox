@@ -1,5 +1,40 @@
-Easy sandboxing for rust code. Do not use yet, experimental, changing rapidly,
-may end up unsupported.
+[![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/insanitybit/gsblookup-rs/blob/master/LICENSE-MIT)
+
+# sandbox
+Rust helpers for running functions in sandboxed environments.
+
+# Usage
+
+Not yet available on crates.io - unstable, unversioned, unverified.
+
+# Notes On Sandbox Composition
+
+This library allows you to build and stack sandbox descriptions and then build
+the sandbox in one shot. This approach does not compose well - one sandbox may
+require rights that a previous sandbox removed. Sandboxes may only partially
+execute before returning an error.
+
+To cope with this I highly suggest you pay attention to the order in which the
+sandboxes are executed, and write tests for your sandboxes.
+
+# Notes on performance
+
+The cost of the sandbox includes:
+* At least one fork (descriptors may incur their own forking)
+* Serialization of function results - in order to return a value from the sandbox
+it must be serialized.
+
+# Notes on security
+
+If we imagine that your sandbox is 'perfect' and the attacker has no access to
+the system, then the path of least resistance is the broker process - the process
+that creates the sandbox. In particular, the serialization library is directly
+exposed to the attacker since they can potentially control return values.
+
+I have not looked at the serialization library at all. I do not know if it uses
+unsafe code.
+
+# Example
 
 ```rust
 let sandbox = Sandbox::new_with_descriptors(vec![

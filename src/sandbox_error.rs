@@ -6,11 +6,12 @@ use std::error;
 use std::fmt;
 use std::io::Error as ioError;
 
-
 #[derive(Debug)]
 pub enum SandboxError {
     IOError(ioError),
     NixError(nixError),
+    CommunicationError(String),
+    SandboxFailure(String),
 }
 
 impl fmt::Display for SandboxError {
@@ -18,6 +19,10 @@ impl fmt::Display for SandboxError {
         match *self {
             SandboxError::IOError(ref err) => write!(f, "IO error: {}", err),
             SandboxError::NixError(ref err) => write!(f, "Nix error: {}", err),
+            SandboxError::CommunicationError(ref err) => {
+                write!(f, "CommunicationError error: {}", err)
+            }
+            SandboxError::SandboxFailure(ref err) => write!(f, "CommunicationError error: {}", err),
         }
     }
 }
@@ -27,6 +32,8 @@ impl error::Error for SandboxError {
         match *self {
             SandboxError::IOError(ref err) => err.description(),
             SandboxError::NixError(ref err) => err.description(),
+            SandboxError::CommunicationError(ref err) => err,
+            SandboxError::SandboxFailure(ref err) => err,
         }
     }
 
@@ -34,6 +41,8 @@ impl error::Error for SandboxError {
         match *self {
             SandboxError::IOError(ref err) => Some(err),
             SandboxError::NixError(ref err) => Some(err),
+            SandboxError::CommunicationError(_) => None,
+            SandboxError::SandboxFailure(_) => None,
         }
     }
 }
